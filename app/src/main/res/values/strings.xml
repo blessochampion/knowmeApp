@@ -31,4 +31,7 @@
     <string name="register_password_does_not_match">Password does not match</string>
     <string name="register_something_went_wrong">Something went wrong</string>
     <string name="register_dialog_message">Creating your account, Please wait...</string>
+    <string name="hint_comment">Type your notes here</string>
+    <string name="activity_profile_details_add_notes">Add notes</string>
+    <string name="details">Details</string>
 </resources>

@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -19,7 +20,7 @@ import com.knowme.knowmeapp.models.Profile;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FolderDetailsActivity extends AppCompatActivity {
+public class FolderDetailsActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     GridView mProfilesGridView;
     TextView mErrorTextView;
     ProgressBar mLoadingIndicator;
@@ -63,6 +64,7 @@ public class FolderDetailsActivity extends AppCompatActivity {
         Context context = this;
         adapter = new ProfilesAdapter(context, profiles);
         mProfilesGridView.setAdapter(adapter);
+        mProfilesGridView.setOnItemClickListener(this);
         mLoadingIndicator.setVisibility(View.INVISIBLE);
         showData();
 
@@ -102,5 +104,16 @@ public class FolderDetailsActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Profile selectedProfile = adapter.getItem(position);
+
+        Context context = this;
+        Class componentToStart = ProfileDetailsActivity.class;
+        Intent profileDetailsIntent = new Intent(context, componentToStart);
+        profileDetailsIntent.putExtra(ProfileDetailsActivity.KEY_PROFIILE, selectedProfile);
+        startActivity(profileDetailsIntent);
     }
 }

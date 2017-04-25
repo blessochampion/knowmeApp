@@ -54,7 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:background="@drawable/login_activity_login_button"
+            android:background="@drawable/green_background_button"
 
             android:minHeight="48dp"
             android:paddingBottom="5dp"
