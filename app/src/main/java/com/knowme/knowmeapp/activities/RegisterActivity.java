@@ -17,7 +17,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.knowme.knowmeapp.R;
+import com.knowme.knowmeapp.data.UserProfileContract;
+import com.knowme.knowmeapp.models.UserProfile;
 import com.knowme.knowmeapp.utils.TextUtils;
 import com.knowme.knowmeapp.utils.UIUtils;
 
@@ -35,26 +39,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     //FireBase
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
-
-        mFullNameEditText = (EditText) findViewById(R.id.et_full_name);
-        mUsernameEditText = (EditText) findViewById(R.id.et_username);
-        mEmailEditText = (EditText) findViewById(R.id.et_email);
-        mPasswordEditText = (EditText) findViewById(R.id.et_password);
-        mConfirmEditText = (EditText) findViewById(R.id.et_confirm_password);
-        mRegisterButton = (Button) findViewById(R.id.bt_register);
-        mLoginTextView = (TextView) findViewById(R.id.tv_login);
-
-        mLoginTextView.setOnClickListener(this);
-
-        mRegisterButton.setOnClickListener(this);
-
-
         //FireBase
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -73,6 +64,25 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
             }
         };
+
+        setContentView(R.layout.activity_register);
+
+        mFullNameEditText = (EditText) findViewById(R.id.et_full_name);
+        mUsernameEditText = (EditText) findViewById(R.id.et_username);
+        mEmailEditText = (EditText) findViewById(R.id.et_email);
+        mPasswordEditText = (EditText) findViewById(R.id.et_password);
+        mConfirmEditText = (EditText) findViewById(R.id.et_confirm_password);
+        mRegisterButton = (Button) findViewById(R.id.bt_register);
+        mLoginTextView = (TextView) findViewById(R.id.tv_login);
+
+        mLoginTextView.setOnClickListener(this);
+
+        mRegisterButton.setOnClickListener(this);
+
+
+
+
+
     }
 
     @Override
@@ -132,19 +142,36 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(mProgressDialog != null){
-                            mProgressDialog.dismiss();
-                        }
+
 
                         if (!task.isSuccessful()) {
+                            if (mProgressDialog != null) {
+                                mProgressDialog.dismiss();
+                            }
                             Snackbar.make(mRegisterButton, getString(R.string.register_something_went_wrong), Snackbar.LENGTH_LONG)
                                     .show();
                         } else {
+                            saveUserProfile();
+                            if (mProgressDialog != null) {
+                                mProgressDialog.dismiss();
+                            }
                             startHomeActivity();
                         }
                     }
                 }
         );
+
+    }
+
+    private void saveUserProfile() {
+        String fullname = mFullNameEditText.getText().toString().trim();
+        String username = mFullNameEditText.getText().toString().trim();
+        UserProfile profile = new UserProfile(fullname, username);
+
+        String userId = mAuth.getCurrentUser().getUid();
+
+        mDatabase.child(UserProfileContract.TABLE_NAME)
+                .child(userId).setValue(profile);
 
     }
 
