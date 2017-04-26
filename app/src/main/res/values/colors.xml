@@ -11,5 +11,6 @@
     <color name="payment_green">#45b568</color>
     <color name="white">#ffffff</color>
     <color name="transparent_white">#0DFFFFFF</color>
+    <color name="red">#ff0000</color>
 
 </resources>

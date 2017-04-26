@@ -9,16 +9,36 @@ import com.google.firebase.database.IgnoreExtraProperties;
 @IgnoreExtraProperties
 public class UserProfile
 {
+    private String userId;
     private String fullName;
     private String username;
+    private String email;
 
     public  UserProfile(){
 
     }
 
-    public UserProfile(String fullName, String username) {
+    public UserProfile(String userId, String fullName, String username, String email) {
         this.fullName = fullName;
         this.username = username;
+        this.userId = userId;
+        this.email = email;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getFullName() {

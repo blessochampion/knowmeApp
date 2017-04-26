@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.knowme.knowmeapp.R;
 import com.knowme.knowmeapp.data.UserProfileContract;
 import com.knowme.knowmeapp.models.UserProfile;
+import com.knowme.knowmeapp.preferences.ProfilePrefs;
 import com.knowme.knowmeapp.utils.TextUtils;
 import com.knowme.knowmeapp.utils.UIUtils;
 
@@ -165,13 +167,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     private void saveUserProfile() {
         String fullname = mFullNameEditText.getText().toString().trim();
-        String username = mFullNameEditText.getText().toString().trim();
-        UserProfile profile = new UserProfile(fullname, username);
-
+        String username = mUsernameEditText.getText().toString().trim();
+        String email = mEmailEditText.getText().toString().trim();
         String userId = mAuth.getCurrentUser().getUid();
-
+        UserProfile profile = new UserProfile(userId, fullname, username, email);
+        ProfilePrefs.getInstance(getApplicationContext()).setUsername(username);
         mDatabase.child(UserProfileContract.TABLE_NAME)
-                .child(userId).setValue(profile);
+                .child(username).setValue(profile);
 
     }
 

@@ -18,6 +18,9 @@ public class Folder implements Parcelable
         this.name = name;
         this.noOfProfilesInside = noOfProfilesInside;
     }
+    public Folder(String name){
+        this(0, name, 0);
+    }
 
     protected Folder(Parcel in) {
         id = in.readInt();

@@ -5,6 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,7 +17,10 @@ import com.knowme.knowmeapp.models.Profile;
 public class ProfileDetailsActivity extends AppCompatActivity {
     private ImageView mBusinessCardImageView;
     private TextView mFullNameTextView;
+    private TextView mNotesContentTextView;
     private Profile mProfile;
+    private EditText mNotesEditText;
+    private Button mAddNotesButton;
 
     public static final String KEY_PROFIILE = "Profile";
 
@@ -38,6 +44,17 @@ public class ProfileDetailsActivity extends AppCompatActivity {
 
         String fullName = mProfile.getName();
         mFullNameTextView.setText(fullName);
+        mNotesContentTextView = (TextView) findViewById(R.id.tv_notes_content);
+        mNotesEditText = (EditText) findViewById(R.id.et_notes);
+        mAddNotesButton = (Button) findViewById(R.id.bt_add_notes);
+        mAddNotesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String userInput = mNotesEditText.getText().toString().trim();
+                mNotesContentTextView.append(userInput);
+            }
+        });
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.tb_folder_details);
 
